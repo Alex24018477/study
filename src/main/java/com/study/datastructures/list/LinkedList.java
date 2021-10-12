@@ -1,7 +1,6 @@
 package com.study.datastructures.list;
 
 public class LinkedList implements List {
-    private static final int DEFAULT_CAPACITY = 10;
 
     private Node[] array;
 
@@ -9,9 +8,7 @@ public class LinkedList implements List {
     private Node tail;
     private int size;
 
-    public LinkedList() {
-        this(DEFAULT_CAPACITY);
-    }
+
 
     public LinkedList(int capacity) {
         this.array = new Node[capacity];
