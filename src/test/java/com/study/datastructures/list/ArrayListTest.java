@@ -28,21 +28,25 @@ public class ArrayListTest {
     @Test
     public void testAdd() {
         arrayList.add("11");
+        arrayList.add(null);
 
 
-        assertEquals(12, arrayList.size());
+        assertEquals(13, arrayList.size());
         assertEquals("11", arrayList.get(11));
+
 
     }
 
     @Test
     public void testAddForIndex() {
         arrayList.add("11", 5);
+        arrayList.add(null, 7);
 
-        assertEquals(12, arrayList.size());
+        assertEquals(13, arrayList.size());
         assertEquals("11", arrayList.get(5));
         assertEquals("5", arrayList.get(6));
-        assertEquals("10", arrayList.get(11));
+        assertEquals("10", arrayList.get(12));
+        assertEquals(null, arrayList.get(7));
 
     }
 
@@ -129,5 +133,16 @@ public class ArrayListTest {
 
 
         assertEquals("[1, 2, 3]", arrayList.toString());
+    }
+
+    @Test
+    public void testToStringWhenAddOtherType() {
+        arrayList = new ArrayList();
+        arrayList.add(1);
+        arrayList.add(null);
+        arrayList.add(3);
+
+
+        assertEquals("[1, null, 3]", arrayList.toString());
     }
 }

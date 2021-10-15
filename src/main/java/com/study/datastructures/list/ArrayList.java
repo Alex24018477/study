@@ -44,7 +44,7 @@ public class ArrayList implements List {
             throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
         }
         Object result = array[index];
-        Object[] arrayCopy = new Object[array.length];
+        Object[] arrayCopy = new Object[array.length-1];
         if (index == 0) {
             System.arraycopy(array, 1, arrayCopy, 0, size - 1);
             array = arrayCopy;
@@ -56,9 +56,7 @@ public class ArrayList implements List {
             System.arraycopy(array, index + 1, arrayCopy, index, size - index);
             array = arrayCopy;
         }
-
         size--;
-
         return result;
     }
 
@@ -138,7 +136,7 @@ public class ArrayList implements List {
 
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         for (int i = 0; i < size; i++) {
-            stringJoiner.add(array[i].toString());
+            stringJoiner.add(String.valueOf(array[i]));
         }
         return stringJoiner.toString();
     }
