@@ -1,31 +1,61 @@
 package com.study.datastructures.map;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class HashMap implements Map {
-    List[] buckets = {new ArrayList(), new ArrayList(), new ArrayList(), new ArrayList(), new ArrayList()};
-    int size;
 
+    private List[] buckets;
+    private List[] oldBuckets;
+    private int size;
+    private int capacity;
+
+    public HashMap() {
+        capacity = 5;
+        buckets = new List[capacity];
+        for (int i = 0; i < capacity; i++) {
+            buckets[i] = new ArrayList<Entry>();
+        }
+    }
+
+    private void copyMap() {
+        oldBuckets = buckets;
+        capacity = capacity * 2;
+        List[] buckets = new List[capacity];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new ArrayList<Entry>();
+        }
+
+        for (List<Entry> list : oldBuckets) {
+            for (int i = 0; i < list.size(); i++) {
+                put(list.get(i).key, list.get(i).value);
+            }
+        }
+    }
 
     @Override
     public Object put(Object key, Object value) {
+        if (countUsedBacket() >= capacity * 0.75) {
+            copyMap();
+        }
+        return putWithoutCopy(key, value);
+    }
 
+    private Object putWithoutCopy(Object key, Object value) {
 
-        Entry entry = new Entry(key, value);
-        int index = indexOfBuckets(key);
-
-
-        if (this.getEntry(key) != null) {
-            this.getEntry(key).setValue(value);
+        Entry currentEntry = getEntry(key);
+        if (currentEntry != null) {
+            Entry oldEntry = new Entry(null, currentEntry.getValue());
+            currentEntry.setValue(value);
+            return oldEntry.getValue();
         } else {
+            Entry entry = new Entry(key, value);
+            int index = getIndex(key);
             entry.setHashCode(key.hashCode());
             buckets[index].add(entry);
+            size++;
         }
-        return entry;
+        return null;
     }
 
 
@@ -36,39 +66,52 @@ public class HashMap implements Map {
 
     @Override
     public int size() {
-        int size = 0;
-        for (List list : buckets) {
-            size += list.size();
-        }
         return size;
     }
 
     @Override
     public boolean containsKey(Object key) {
-
-        if (this.getEntry(key) != null) {
-            return true;
-        }
-        return false;
+        return getEntry(key) != null;
     }
 
     @Override
     public Object remove(Object key) {
-        if (this.getEntry(key) != null){
-            int indexInBucket = indexOfBuckets(key);
-            int indexInArray = 0;
-            for (int i = 0; i < buckets[indexInBucket].size(); i++) {
-                if(((Entry)(buckets[indexInBucket].get(i))).getKey().equals(key)){
-                    indexInArray = i;
+        Entry entry = getEntry(key);
+        if (entry != null) {
+            List bucket = buckets[getIndex(key)];
+            Entry currentEntry = entry;
+            bucket.remove(entry);
+            size--;
+            return currentEntry.getValue();
+        }
+        return null;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    private Entry getEntry(Object key) {
+        int index = getIndex(key);
+        int hash = key.hashCode();
+
+        if (buckets[index].isEmpty()) {
+            return null;
+        }
+        for (Object o : buckets[index]) {
+            if (((Entry) o).getHashCode() == hash) {
+                if (((Entry) o).getKey().equals(key)) {
+                    return ((Entry) o);
                 }
             }
-            return buckets[indexInBucket].remove(indexInArray);
+
         }
         return null;
     }
 
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "{", "}");
+
         for (int i = 0; i < buckets.length; i++) {
             for (Object o : buckets[i]) {
                 stringJoiner.add(((Entry) o).toString());
@@ -77,35 +120,28 @@ public class HashMap implements Map {
         return stringJoiner.toString();
     }
 
-    private int indexOfBuckets(Object key) {
-        return key.hashCode() % buckets.length;
+
+    private int getIndex(Object key) {
+        return Math.abs(key.hashCode()) % buckets.length;
     }
 
-    private Entry getEntry(Object key) {
-        int index = indexOfBuckets(key);
-        int hash = key.hashCode();
-
-        if (buckets[index].isEmpty()) {
-            return null;
-        } else {
-            for (Object o : buckets[index]) {
-                if (((Entry) o).getHashCode() == hash) {
-                    if (((Entry) o).getKey().equals(key)) {
-                        return ((Entry) o);
-                    }
-                }
-
+    private int countUsedBacket(){
+        int count = 0;
+        for (int i = 0; i < buckets.length; i++) {
+            if (!buckets[i].isEmpty()){
+                count++;
             }
         }
-        return null;
+        return count;
     }
+
 
     private class Entry {
         private int hashCode;
         private Object key;
         private Object value;
 
-        public Entry(Object key, Object value) {
+        private Entry(Object key, Object value) {
             this.key = key;
             this.value = value;
         }
@@ -114,7 +150,7 @@ public class HashMap implements Map {
             return key;
         }
 
-        public void setKey(Object key) {
+        private void setKey(Object key) {
             this.key = key;
         }
 
@@ -130,23 +166,10 @@ public class HashMap implements Map {
             return hashCode;
         }
 
-        public void setHashCode(int hashCode) {
+        private void setHashCode(int hashCode) {
             this.hashCode = hashCode;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Entry)) return false;
-            Entry entry = (Entry) o;
-            return getKey().equals(entry.getKey()) &&
-                    getValue().equals(entry.getValue());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getKey());
-        }
 
         @Override
         public String toString() {

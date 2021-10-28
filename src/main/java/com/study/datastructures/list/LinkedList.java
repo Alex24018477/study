@@ -31,13 +31,13 @@ public class LinkedList implements List {
             ourNode.setNext(new Node(value, tail, null));
             tail = ourNode.getNext();
         } else {
-            Node node = new Node(value, this.getNode(index - 1), this.getNode(index));
+            Node node = new Node(value, getNode(index - 1), this.getNode(index));
             if (index < size / 2) {
-                this.getNode(index).setPrev(node);
-                this.getNode(index - 1).setNext(node);
+                getNode(index).setPrev(node);
+                getNode(index - 1).setNext(node);
             } else {
-                this.getNode(index - 1).setNext(node);
-                this.getNode(index).setPrev(node);
+                getNode(index - 1).setNext(node);
+                getNode(index).setPrev(node);
             }
         }
         size++;
@@ -48,23 +48,23 @@ public class LinkedList implements List {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
         }
-        Object value = this.get(index);
+        Object value = get(index);
         if (index == 0) {
-            this.getNode(1).setPrev(null);
-            head = this.getNode(1);
+            getNode(1).setPrev(null);
+            head = getNode(1);
         } else if (index == size - 1) {
-            tail = this.getNode(size - 2);
+            tail = getNode(size - 2);
             tail.setNext(null);
         } else if (size == 3 && index == 1) {
             head.setNext(tail);
             tail.setPrev(head);
         } else {
             if (index + 1 <= size / 2) {
-                this.getNode(index + 1).setPrev(this.getNode(index - 1));
-                this.getNode(index - 1).setNext(this.getNode(index + 1));
+                getNode(index + 1).setPrev(getNode(index - 1));
+                getNode(index - 1).setNext(getNode(index + 1));
             } else {
-                this.getNode(index - 1).setNext(this.getNode(index + 1));
-                this.getNode(index + 1).setPrev(this.getNode(index - 1));
+                getNode(index - 1).setNext(getNode(index + 1));
+                getNode(index + 1).setPrev(getNode(index - 1));
 
             }
 
@@ -76,7 +76,7 @@ public class LinkedList implements List {
 
 
     public Object get(int index) {
-        return this.getNode(index).getValue();
+        return getNode(index).getValue();
     }
 
 
@@ -85,7 +85,7 @@ public class LinkedList implements List {
             throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
         }
         Object oldValue = getNode(index).getValue();
-        this.getNode(index).setValue(value);
+        getNode(index).setValue(value);
         return oldValue;
     }
 

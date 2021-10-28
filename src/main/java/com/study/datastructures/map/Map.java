@@ -13,4 +13,6 @@ public interface Map{
 
     String toString();
 
+    int getCapacity();
+
 }

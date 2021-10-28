@@ -43,9 +43,6 @@ public class LinkedListTest {
         assertEquals(13, linkedList.size());
         assertEquals("9", linkedList.get(10));
         assertEquals("11", linkedList.get(11));
-//        assertEquals("5", linkedList.get(6));
-//        assertEquals("10", linkedList.get(11));
-
     }
 
     @Test
@@ -58,8 +55,6 @@ public class LinkedListTest {
         assertEquals(8, linkedList.size());
         assertEquals("4", linkedList.get(2));
         assertEquals("9", linkedList.remove(7).toString());
-
-
     }
 
     @Test
@@ -75,7 +70,6 @@ public class LinkedListTest {
         assertEquals(2, list.size());
         assertEquals("22", list.get(0));
         assertEquals("44", list.get(1));
-
     }
 
     @Test
@@ -83,9 +77,6 @@ public class LinkedListTest {
         assertEquals("0", linkedList.get(0));
         assertEquals("6", linkedList.get(6));
         assertEquals("10", linkedList.get(10));
-//        assertEquals("11", linkedList.get(11));
-//        assertThrows(IndexOutOfBoundsException.class, "Index should be between '0' and 11 (including)");
-
     }
 
     @Test
@@ -97,9 +88,7 @@ public class LinkedListTest {
         assertEquals("99", linkedList.get(3));
         assertEquals(null, linkedList.get(0));
         assertEquals("100", linkedList.get(10));
-
         assertEquals(11, linkedList.size());
-
     }
 
     @Test
@@ -107,7 +96,6 @@ public class LinkedListTest {
         linkedList.clear();
 
         assertEquals(0, linkedList.size());
-//        assertNull(linkedList.get(0));
     }
 
     @Test
@@ -118,8 +106,6 @@ public class LinkedListTest {
         linkedList.remove(5);
         linkedList.remove(5);
         assertEquals(10, linkedList.size());
-
-
     }
 
     @Test
@@ -167,7 +153,6 @@ public class LinkedListTest {
         linkedList.add("1");
         linkedList.add("2");
         linkedList.add("3");
-
 
         assertEquals("[1, 2, 3]", linkedList.toString());
     }

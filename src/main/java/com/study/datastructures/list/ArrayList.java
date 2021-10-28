@@ -11,7 +11,7 @@ public class ArrayList implements List {
     private int size;
 
     public ArrayList() {
-        this(DEFAULT_CAPACITY);
+        array = new Object[DEFAULT_CAPACITY];
     }
 
     public ArrayList(int capacity) {
@@ -19,12 +19,12 @@ public class ArrayList implements List {
     }
 
     public void add(Object value) {
-        this.add(value, size);
+        add(value, size);
     }
 
     public void add(Object value, int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
+            throw new IndexOutOfBoundsException("Index should be between '0' and " + size );
         }
         if (size == array.length) {
             Object[] arrayCopy = new Object[array.length + array.length / 2];
@@ -40,8 +40,8 @@ public class ArrayList implements List {
     }
 
     public Object remove(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index should be between '0' and " + size);
         }
         Object result = array[index];
         Object[] arrayCopy = new Object[array.length-1];
@@ -49,7 +49,7 @@ public class ArrayList implements List {
             System.arraycopy(array, 1, arrayCopy, 0, size - 1);
             array = arrayCopy;
         } else if (index == size - 1) {
-            System.arraycopy(array, 1, arrayCopy, 0, size - 2);
+            System.arraycopy(array, 0, arrayCopy, 0, size - 1);
             array = arrayCopy;
         } else {
             System.arraycopy(array, 0, arrayCopy, 0, index);
@@ -61,15 +61,15 @@ public class ArrayList implements List {
     }
 
     public Object get(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index should be between '0' and " + size);
         }
         return array[index];
     }
 
     public Object set(Object value, int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index should be between '0' and " + size + " (including)");
+            throw new IndexOutOfBoundsException("Index should be between '0' and " + size);
         }
         Object result = array[index];
         array[index] = value;
@@ -82,7 +82,7 @@ public class ArrayList implements List {
     }
 
     public int size() {
-        return this.size;
+        return size;
     }
 
     public boolean isEmpty() {

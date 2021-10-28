@@ -30,11 +30,26 @@ public class ArrayListTest {
         arrayList.add("11");
         arrayList.add(null);
 
-
         assertEquals(13, arrayList.size());
         assertEquals("11", arrayList.get(11));
+    }
 
+    @Test
+    public void testAddToHead() {
+        arrayList.add("11", 0);
 
+        assertEquals(12, arrayList.size());
+        assertEquals("11", arrayList.get(0));
+        assertEquals("0", arrayList.get(1));
+    }
+
+    @Test
+    public void testAddToTail() {
+        arrayList.add("11", 11);
+
+        assertEquals(12, arrayList.size());
+        assertEquals("11", arrayList.get(11));
+        assertEquals("10", arrayList.get(10));
     }
 
     @Test
@@ -47,18 +62,35 @@ public class ArrayListTest {
         assertEquals("5", arrayList.get(6));
         assertEquals("10", arrayList.get(12));
         assertEquals(null, arrayList.get(7));
-
     }
 
     @Test
-    public void testRemove() {
+    public void testRemoveFirstElement() {
         arrayList.remove(0);
 
         assertEquals("1", arrayList.get(0));
         assertEquals(10, arrayList.size());
         assertEquals("10", arrayList.get(9));
         assertEquals("1", arrayList.remove(0).toString());
+    }
 
+    @Test
+    public void testRemoveLastElement() {
+        arrayList.remove(10);
+
+        assertEquals("0", arrayList.get(0));
+        assertEquals(10, arrayList.size());
+        assertEquals("9", arrayList.get(9));
+        assertEquals("9", (String) arrayList.remove(9));
+    }
+
+    @Test
+    public void testRemoveElementBetweenFirstAndLast() {
+        arrayList.remove(1);
+
+        assertEquals("0", arrayList.get(0));
+        assertEquals(10, arrayList.size());
+        assertEquals("2", arrayList.get(1));
     }
 
     @Test
@@ -80,7 +112,6 @@ public class ArrayListTest {
         arrayList.clear();
 
         assertEquals(0, arrayList.size());
-        assertNull(arrayList.get(0));
     }
 
     @Test
@@ -106,15 +137,19 @@ public class ArrayListTest {
 
     @Test
     public void testContains() {
+        arrayList.set(null, 2);
 
         assertTrue(arrayList.contains("5"));
+        assertTrue(arrayList.contains(null));
     }
 
     @Test
     public void testIndexOf() {
         assertEquals(2, arrayList.indexOf("2"));
 
-        arrayList.add(new String("3"), 3);
+        arrayList.set(null, 2);
+        arrayList.set(null, 5);
+        assertEquals(2, arrayList.indexOf(null));
     }
 
     @Test
